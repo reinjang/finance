@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiply Input Value</title>
+</head>
+<body>
+    <h1>Multiply Input Value by 2</h1>
+    <form id="inputForm">
+        <label for="inputValue">Input:</label>
+        <input type="number" id="inputValue" name="inputValue" required>
+        <button type="submit">Submit</button>
+    </form>
+    <h2>Result:</h2>
+    <pre id="result"></pre>
+    <script>
+        document.getElementById('inputForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const inputValue = parseInt(document.getElementById('inputValue').value);
+            // Send as a dictionary with a fixed key, e.g., {'input': value}
+            const dictString = "{'input': " + inputValue + "}";
+            const response = await fetch('http://127.0.0.1:8000/multiply_dict/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ data: dictString })
+            });
+            const result = await response.json();
+            if ('multiplied' in result) {
+                document.getElementById('result').textContent = result.multiplied;
+            } else {
+                document.getElementById('result').textContent = 'Error: ' + (result.detail || 'Unknown error');
+            }
+        });
+    </script>
+</body>
+</html> 
