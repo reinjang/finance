@@ -1,7 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import Dict
-import ast
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
@@ -15,21 +14,24 @@ app.add_middleware(
 )
 
 class DictInput(BaseModel):
-    data: str  # Expecting a string representation of a dictionary
+    data: Dict[str, int]  # Accept a dictionary directly
 
 @app.post("/multiply_dict/")
 def multiply_dict(input_data: DictInput):
     try:
-        # Safely evaluate the string to a dictionary
-        input_dict = ast.literal_eval(input_data.data)
-        if not isinstance(input_dict, dict):
-            raise ValueError
-        # Multiply each value by 2 and return with key 'multiplied'
-        # Only use the first value in the dictionary
-        if len(input_dict) != 1:
-            raise ValueError
-        value = next(iter(input_dict.values()))
-        multiplied = value * 2
-        return {"multiplied": multiplied}
+        input_dict = input_data.data
+        # Validate keys
+        expected_keys = {"start", "income", "expenses"}
+        if set(input_dict.keys()) != expected_keys:
+            raise ValueError("Input must contain exactly 'start', 'income', and 'expenses'.")
+        start = input_dict["start"]
+        income = input_dict["income"]
+        expenses = input_dict["expenses"]
+        net = income - expenses
+        result = {}
+        result["year_1"] = start
+        for i in range(2, 11):
+            result[f"year_{i}"] = result[f"year_{i-1}"] + net * 12
+        return {"result": result}
     except Exception:
-        raise HTTPException(status_code=400, detail="Invalid dictionary string.") 
+        raise HTTPException(status_code=400, detail="Invalid input. Must be a dict with 'start', 'income', and 'expenses'.") 
