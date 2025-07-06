@@ -22,9 +22,9 @@ function App() {
   return (
     <div className="min-h-screen flex items-center justify-center">
       <div className="w-full max-w-7xl mx-auto flex items-center justify-center px-2 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full min-h-0">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr,1.5fr] gap-6 w-full min-h-0 px-4 md:px-10 lg:px-16 xl:px-24 h-full">
           {/* Left Column - Input Components */}
-          <div className="flex flex-col space-y-6 h-full min-h-0 overflow-auto">
+          <div className="flex flex-col space-y-3 h-full min-h-0 overflow-auto">
             <div className="flex-shrink-0">
               <InputCard 
                 form={form} 
@@ -41,13 +41,15 @@ function App() {
           </div>
           {/* Right Column - Insights */}
           <div className="h-full flex flex-col min-h-0 overflow-auto">
-            <Insights 
-              form={form}
-              investments={investments}
-              apiResult={apiResult}
-              setApiResult={setApiResult}
-              onSubmit={handleFormSubmit}
-            />
+            <div className="h-full flex flex-col">
+              <Insights 
+                form={form}
+                investments={investments}
+                apiResult={apiResult}
+                setApiResult={setApiResult}
+                onSubmit={handleFormSubmit}
+              />
+            </div>
           </div>
         </div>
       </div>

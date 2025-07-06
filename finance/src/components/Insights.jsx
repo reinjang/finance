@@ -23,7 +23,7 @@ export default function Insights({ form, investments, apiResult, setApiResult, o
       investments
     });
 
-    if (!hasNetWorth || !hasIncome || !hasExpenses || !hasInvestments) {
+    if (!hasNetWorth || !hasIncome || !hasExpenses) {
       setApiResult(null);
       setError(null);
       return;
@@ -32,15 +32,24 @@ export default function Insights({ form, investments, apiResult, setApiResult, o
     setLoading(true);
     setError(null);
     
+    const totalAllocated = investments.reduce((sum, inv) => sum + Number(inv.ratio), 0);
+    let investmentsForApi = investments.map(inv => ({
+      elementname: inv.name,
+      elementratio: Number(inv.ratio),
+      elementperformance: Number(inv.performance),
+    }));
+    if (totalAllocated < 100) {
+      investmentsForApi.push({
+        elementname: 'Unallocated',
+        elementratio: 100 - totalAllocated,
+        elementperformance: 0,
+      });
+    }
     const requestData = {
       networth: Number(form.networth),
       income: Number(form.income),
       expenses: Number(form.expenses),
-      investments: investments.map(inv => ({
-        elementname: inv.name,
-        elementratio: Number(inv.ratio),
-        elementperformance: Number(inv.performance),
-      })),
+      investments: investmentsForApi,
     };
 
     console.log('Making API request with data:', requestData);
@@ -149,34 +158,38 @@ export default function Insights({ form, investments, apiResult, setApiResult, o
             const year = context.dataIndex;
             const netWorth = context.parsed.y;
             const yearData = apiResult[year];
-            let tooltipText = [`Net Worth: €${netWorth.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`];
-            if (yearData && yearData.investments && yearData.investments.length > 0) {
-              const performances = yearData.investments
-                .filter(inv => inv.elementperformance !== undefined && inv.elementname !== 'Unallocated')
-                .map(inv => Number(inv.elementperformance));
-              if (performances.length > 0) {
-                const avg = performances.reduce((a, b) => a + b, 0) / performances.length;
-                tooltipText.push(`Average Return: ${avg.toFixed(2)}%`);
-              }
-            }
-            if (yearData && yearData.investments) {
-              tooltipText.push('');
-              tooltipText.push('Investment Breakdown:');
-              yearData.investments.forEach(inv => {
-                if (inv.elementname !== 'Unallocated') {
+            const datasetLabel = context.dataset.label;
+            // If this is the Total Net Worth line, show the full breakdown
+            if (datasetLabel === 'Total Net Worth') {
+              let tooltipText = [`Net Worth: €${netWorth.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`];
+              if (yearData && yearData.investments) {
+                tooltipText.push('');
+                tooltipText.push('Investment Breakdown:');
+                yearData.investments.forEach(inv => {
+                  if (inv.elementname !== 'Unallocated') {
+                    tooltipText.push(
+                      `• ${inv.elementname}: €${inv.investment_amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} (${inv.elementratio}%) — Performance this year: €${inv.return !== undefined ? inv.return.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : 'N/A'}`
+                    );
+                  }
+                });
+                const unallocated = yearData.investments.find(inv => inv.elementname === 'Unallocated');
+                if (unallocated && unallocated.investment_amount > 0) {
                   tooltipText.push(
-                    `• ${inv.elementname}: €${inv.investment_amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} (${inv.elementratio}%) — Performance this year: €${inv.return !== undefined ? inv.return.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : 'N/A'}`
+                    `• Unallocated: €${unallocated.investment_amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} (${unallocated.elementratio}%)`
                   );
                 }
-              });
-              const unallocated = yearData.investments.find(inv => inv.elementname === 'Unallocated');
-              if (unallocated && unallocated.investment_amount > 0) {
-                tooltipText.push(
-                  `• Unallocated: €${unallocated.investment_amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} (${unallocated.elementratio}%)`
-                );
               }
+              return tooltipText;
+            } else {
+              // For individual investment lines, show only the value and performance
+              if (yearData && yearData.investments) {
+                const inv = yearData.investments.find(i => i.elementname === datasetLabel);
+                if (inv) {
+                  return `€${inv.investment_amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} — Performance this year: €${inv.return !== undefined ? inv.return.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : 'N/A'}`;
+                }
+              }
+              return null;
             }
-            return tooltipText;
           }
         }
       }
@@ -231,12 +244,6 @@ export default function Insights({ form, investments, apiResult, setApiResult, o
   return (
     <div className="card h-full flex flex-col">
       <h2>Financial Projections</h2>
-      
-      {!hasRequiredData && (
-        <div className="text-zinc-400 text-center py-2 flex-1 flex items-center justify-center">
-          Please fill in all financial data and add at least one investment to see projections.
-        </div>
-      )}
       
       {loading && (
         <div className="text-zinc-300 text-center py-2 flex-1 flex items-center justify-center">

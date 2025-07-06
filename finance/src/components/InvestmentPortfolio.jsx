@@ -133,9 +133,11 @@ export default function InvestmentPortfolio({ investments, setInvestments, onCha
             onChange={e => setInput(i => ({ ...i, performance: e.target.value }))}
             required
           />
-          <button type="button" className="primary-action" onClick={handleAdd}>
-            Add Investment
-          </button>
+          <div className="w-full">
+            <button type="button" className="primary-action w-full" onClick={handleAdd}>
+              Add Investment
+            </button>
+          </div>
         </div>
         
         {investments.length > 0 && (
