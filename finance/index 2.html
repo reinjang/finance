@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Finance</title>
+    <style>
+        body {
+            background: #18181b;
+            color: #fff;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            font-size: 0.98rem;
+            margin: 0;
+            padding: 0;
+        }
+        main {
+            min-height: 100vh;
+            padding: 24px;
+            background: #18181b;
+        }
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        @media (min-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        @media (min-width: 1100px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+        }
+        .card {
+            background: #27272a;
+            border-radius: 18px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.18), 0 1.5px 4px rgba(0,0,0,0.10);
+            padding: 28px 24px 20px 24px;
+            text-align: left;
+            min-width: 0;
+        }
+        .card h2 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.7rem;
+            color: #fff;
+        }
+        .card label {
+            color: #d4d4d8;
+        }
+        .card input, .card button, .card select {
+            font-size: 1rem;
+        }
+        .card input[type="number"], .card input[type="text"] {
+            background: #18181b;
+            color: #fff;
+            border: 1px solid #3f3f46;
+            border-radius: 6px;
+            padding: 0.3rem 0.5rem;
+            margin-bottom: 0.5rem;
+            width: 100%;
+        }
+        .card input[type="number"]:focus, .card input[type="text"]:focus {
+            border: 1.5px solid #818cf8;
+            outline: none;
+        }
+        .card button[type="submit"] {
+            background: linear-gradient(90deg, #818cf8 0%, #38bdf8 100%);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 0.6rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(129,140,248,0.08);
+            transition: background 0.2s, transform 0.1s;
+        }
+        .card button[type="submit"]:hover {
+            background: linear-gradient(90deg, #6366f1 0%, #818cf8 100%);
+            transform: translateY(-2px) scale(1.03);
+        }
+        #pieChart {
+            display: block;
+            margin: 0 auto 1rem auto;
+            width: 180px !important;
+            height: 180px !important;
+            max-width: 100%;
+        }
+        h1 {
+            color: #2d3a4a;
+            font-size: 1.2rem;
+            margin-bottom: 0.7rem;
+        }
+        form label {
+            display: block;
+            margin: 0.7rem 0 0.2rem 0;
+            color: #4a5a6a;
+            font-weight: 500;
+            font-size: 0.98em;
+        }
+        form input[type="number"] {
+            width: 70%;
+            padding: 0.2rem;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 0.92rem;
+            margin-bottom: 0.2rem;
+            transition: border 0.2s;
+        }
+        form input[type="number"]:focus {
+            border: 1.5px solid #4f8cff;
+            outline: none;
+        }
+        button[type="submit"] {
+            margin-top: 0.7rem;
+            background: linear-gradient(90deg, #4f8cff 0%, #6fc3ff 100%);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 0.5rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(79,140,255,0.08);
+            transition: background 0.2s, transform 0.1s;
+        }
+        button[type="submit"]:hover {
+            background: linear-gradient(90deg, #357ae8 0%, #4f8cff 100%);
+            transform: translateY(-2px) scale(1.03);
+        }
+        h2 {
+            color: #2d3a4a;
+            margin-top: 1.2rem;
+            font-size: 1.05rem;
+        }
+        #result {
+            background: #f7fafc;
+            border-radius: 6px;
+            padding: 0.4rem 0.3rem;
+            margin: 0.4rem 0 0.7rem 0;
+            font-size: 0.95rem;
+            color: #2d3a4a;
+            min-height: 1.2em;
+        }
+        #resultChart {
+            width: 50vw !important;
+            height: auto !important;
+            max-width: 100%;
+            display: block;
+            margin: 0 auto 1.5rem auto;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(79,140,255,0.07);
+        }
+        @media (max-width: 900px) {
+            .main-flex {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1vw;
+                height: auto;
+            }
+            .input-card, .container.investment-container {
+                max-width: 98vw;
+                min-width: 0;
+                width: 98vw;
+                padding: 1vw 1vw 1vw 1vw;
+                margin-left: 0;
+            }
+            #resultChart {
+                width: 90vw !important;
+            }
+        }
+        .investment-container {
+            text-align: left;
+        }
+        .investment-container h2 {
+            text-align: left;
+            font-size: 1.05rem;
+        }
+        .investment-container label,
+        .investment-container input,
+        .investment-container button,
+        .investment-container ul {
+            font-size: 0.95rem;
+        }
+        .investment-container input[type="text"],
+        .investment-container input[type="number"] {
+            padding: 0.18rem;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            margin-bottom: 0.4rem;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .investment-container input[type="text"]:focus,
+        .investment-container input[type="number"]:focus {
+            border: 1.5px solid #4f8cff;
+            outline: none;
+        }
+        .investment-container button[type="submit"] {
+            margin-top: 0.3rem;
+            background: linear-gradient(90deg, #4f8cff 0%, #6fc3ff 100%);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 0.4rem 1.2rem;
+            font-size: 0.98rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(79,140,255,0.08);
+            transition: background 0.2s, transform 0.1s;
+        }
+        .investment-container button[type="submit"]:hover {
+            background: linear-gradient(90deg, #357ae8 0%, #4f8cff 100%);
+            transform: translateY(-2px) scale(1.03);
+        }
+        .investment-container ul {
+            margin-top: 0.2rem;
+        }
+        .investment-container li {
+            margin-bottom: 0.2rem;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <div class="dashboard-grid">
+            <div class="card">
+                <h2>Input</h2>
+                <form id="inputForm">
+                    <label for="networth">Net Worth:</label>
+                    <input type="number" id="networth" name="networth" required><br>
+                    <label for="income">Income:</label>
+                    <input type="number" id="income" name="income" required><br>
+                    <label for="expenses">Expenses:</label>
+                    <input type="number" id="expenses" name="expenses" required><br>
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
+            <div class="card">
+                <h2>Investment Portfolio</h2>
+                <canvas id="pieChart" width="180" height="180"></canvas>
+                <form id="investmentForm" style="margin-bottom:1rem; text-align:left;">
+                    <label for="investmentName" style="display:block;margin-bottom:0.2rem;">Investment name</label>
+                    <input type="text" id="investmentName" placeholder="Investment name" required>
+                    <label for="investmentRatio" style="display:block;margin-bottom:0.2rem;">% of total holding</label>
+                    <input type="number" id="investmentRatio" placeholder="% of total holding" min="1" max="100" required>
+                    <label for="investmentPerformance" style="display:block;margin-bottom:0.2rem;">Estimated performance (%)</label>
+                    <input type="number" id="investmentPerformance" placeholder="Estimated performance (%)" required>
+                    <button type="submit">Add Investment</button>
+                </form>
+                <ul id="investmentList" style="list-style:none;padding:0;text-align:left;font-size:1rem;"></ul>
+                <div id="investmentError" style="color:#e74c3c;font-size:0.95em;text-align:left;"></div>
+            </div>
+            <div class="card">
+                <h2>Insights</h2>
+                <canvas id="resultChart"></canvas>
+                <pre id="result"></pre>
+            </div>
+        </div>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        let chartInstance = null;
+        let pieInstance = null;
+        let investments = [];
+
+        function updatePieChart() {
+            const pieCanvas = document.getElementById('pieChart');
+            const ctx = pieCanvas.getContext('2d');
+            let labels, data;
+            if (investments.length === 0) {
+                labels = ['Unallocated'];
+                data = [100];
+            } else {
+                labels = investments.map(inv => inv.elementname);
+                data = investments.map(inv => inv.elementratio);
+                const total = data.reduce((sum, val) => sum + val, 0);
+                if (total < 100) {
+                    labels.push('Remaining');
+                    data.push(100 - total);
+                }
+            }
+            const bgColors = [
+                'rgba(54, 162, 235, 0.7)',
+                'rgba(255, 99, 132, 0.7)',
+                'rgba(255, 206, 86, 0.7)',
+                'rgba(75, 192, 192, 0.7)',
+                'rgba(153, 102, 255, 0.7)',
+                'rgba(255, 159, 64, 0.7)',
+                'rgba(199, 199, 199, 0.7)'
+            ];
+            if (pieInstance) {
+                pieInstance.destroy();
+            }
+            // Reset canvas size to fixed value to prevent growth
+            pieCanvas.width = 180;
+            pieCanvas.height = 180;
+            pieInstance = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: bgColors,
+                        borderColor: '#fff',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+            // Ensure the pie chart is visible
+            pieCanvas.style.display = 'block';
+        }
+
+        function updateInvestmentList() {
+            const list = document.getElementById('investmentList');
+            list.innerHTML = '';
+            investments.forEach((inv, idx) => {
+                const li = document.createElement('li');
+                li.style.marginBottom = '0.4rem';
+                li.innerHTML = `<strong>${inv.elementname}</strong> - ${inv.elementratio}% - ${inv.elementperformance}% <button data-idx="${idx}" style="margin-left:8px;cursor:pointer;">Remove</button>`;
+                list.appendChild(li);
+            });
+            // Remove handler
+            Array.from(list.querySelectorAll('button')).forEach(btn => {
+                btn.onclick = function() {
+                    investments.splice(parseInt(this.dataset.idx), 1);
+                    updatePieChart();
+                    updateInvestmentList();
+                    // Auto-submit the main form after removing an investment
+                    document.getElementById('inputForm').dispatchEvent(new Event('submit', { cancelable: true }));
+                };
+            });
+        }
+
+        // Always show the pie chart on page load
+        window.addEventListener('DOMContentLoaded', updatePieChart);
+
+        document.getElementById('investmentForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const name = document.getElementById('investmentName').value.trim();
+            const ratio = parseFloat(document.getElementById('investmentRatio').value);
+            const perf = parseFloat(document.getElementById('investmentPerformance').value);
+            const errorDiv = document.getElementById('investmentError');
+            errorDiv.textContent = '';
+            if (!name || isNaN(ratio) || isNaN(perf)) {
+                errorDiv.textContent = 'Please fill in all fields.';
+                return;
+            }
+            const totalRatio = investments.reduce((sum, inv) => sum + inv.elementratio, 0) + ratio;
+            if (totalRatio > 100) {
+                errorDiv.textContent = 'Total holding cannot exceed 100%.';
+                return;
+            }
+            investments.push({
+                elementname: name,
+                elementratio: ratio,
+                elementperformance: perf
+            });
+            updatePieChart();
+            updateInvestmentList();
+            document.getElementById('investmentForm').reset();
+            // Auto-submit the main form after adding an investment
+            document.getElementById('inputForm').dispatchEvent(new Event('submit', { cancelable: true }));
+        });
+
+        // Show initial graph with user input (year 0 only)
+        function showInitialGraph() {
+            const networth = parseInt(document.getElementById('networth').value) || 0;
+            const years = ['Year 0'];
+            const totals = [networth];
+            const ctx = document.getElementById('resultChart').getContext('2d');
+            if (chartInstance) {
+                chartInstance.data.datasets[0].data = totals;
+                chartInstance.data.labels = years;
+                chartInstance.options.scales.y.min = Math.floor(networth * 0.9);
+                chartInstance.options.scales.y.max = Math.ceil(networth * 1.1);
+                chartInstance.update();
+            } else {
+                chartInstance = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: years,
+                        datasets: [{
+                            label: 'Total Net Worth',
+                            data: totals,
+                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 2,
+                            fill: false,
+                            tension: 0.1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: false,
+                                min: Math.floor(networth * 0.9),
+                                max: Math.ceil(networth * 1.1),
+                                ticks: {
+                                    callback: function(value) {
+                                        return '€' + value;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        // Update the graph when user changes input
+        document.getElementById('networth').addEventListener('input', showInitialGraph);
+        document.getElementById('income').addEventListener('input', showInitialGraph);
+        document.getElementById('expenses').addEventListener('input', showInitialGraph);
+
+        // Show initial graph on page load
+        window.addEventListener('DOMContentLoaded', showInitialGraph);
+
+        document.getElementById('inputForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const networth = parseInt(document.getElementById('networth').value);
+            const income = parseInt(document.getElementById('income').value);
+            const expenses = parseInt(document.getElementById('expenses').value);
+            // Build the JSON object as specified
+            const jsonObj = {
+                networth: networth,
+                income: income,
+                expenses: expenses,
+                investments: investments
+            };
+            const response = await fetch('http://127.0.0.1:8000/multiply_dict/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(jsonObj)
+            });
+            const result = await response.json();
+            if ('result' in result) {
+                // Prepare data for the chart from new API format
+                const years = result.result.map(item => `Year ${item.year}`);
+                const totals = result.result.map(item => item.totalsum);
+                // Calculate min and max for Y axis with 10% padding
+                const minY = Math.min(...totals);
+                const maxY = Math.max(...totals);
+                const padding = 0.1 * (maxY - minY === 0 ? maxY : (maxY - minY));
+                const chartMin = Math.floor(minY - padding);
+                const chartMax = Math.ceil(maxY + padding);
+                // Draw or update the chart
+                const ctx = document.getElementById('resultChart').getContext('2d');
+                if (chartInstance) {
+                    chartInstance.data.datasets[0].data = totals;
+                    chartInstance.data.labels = years;
+                    chartInstance.options.scales.y.min = chartMin;
+                    chartInstance.options.scales.y.max = chartMax;
+                    chartInstance.options.plugins.tooltip.callbacks = {
+                        title: function(context) {
+                            return context[0].label;
+                        },
+                        label: function(context) {
+                            const idx = context.dataIndex;
+                            const yearData = result.result[idx];
+                            let lines = [`Total Net Worth: €${yearData.totalsum.toFixed(2)}`];
+                            if (yearData.investments && yearData.investments.length > 0) {
+                                lines.push('Investments:');
+                                yearData.investments.forEach(inv => {
+                                    lines.push(`  ${inv.elementname}: €${inv.investment_amount.toFixed(2)} (Return: €${inv.return.toFixed(2)})`);
+                                });
+                            }
+                            return lines;
+                        }
+                    };
+                    chartInstance.update();
+                } else {
+                    chartInstance = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: years,
+                            datasets: [{
+                                label: 'Total Net Worth',
+                                data: totals,
+                                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                                borderColor: 'rgba(54, 162, 235, 1)',
+                                borderWidth: 2,
+                                fill: false,
+                                tension: 0.1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: false,
+                                    min: chartMin,
+                                    max: chartMax,
+                                    ticks: {
+                                        callback: function(value) {
+                                            return '€' + value;
+                                        }
+                                    }
+                                }
+                            },
+                            plugins: {
+                                tooltip: {
+                                    callbacks: {
+                                        title: function(context) {
+                                            return context[0].label;
+                                        },
+                                        label: function(context) {
+                                            const idx = context.dataIndex;
+                                            const yearData = result.result[idx];
+                                            let lines = [`Total Net Worth: €${yearData.totalsum.toFixed(2)}`];
+                                            if (yearData.investments && yearData.investments.length > 0) {
+                                                lines.push('Investments:');
+                                                yearData.investments.forEach(inv => {
+                                                    lines.push(`  ${inv.elementname}: €${inv.investment_amount.toFixed(2)} (Return: €${inv.return.toFixed(2)})`);
+                                                });
+                                            }
+                                            return lines;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+                document.getElementById('result').textContent = 'Error: ' + (result.detail || 'Unknown error');
+            } else {
+                document.getElementById('result').textContent = 'Error: ' + (result.detail || 'Unknown error');
+            }
+        });
+    </script>
+</body>
+</html> 
