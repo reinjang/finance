@@ -102,20 +102,21 @@ export default function Insights({ form, investments, apiResult, setApiResult, o
       // Add a dataset for each investment
       ...(apiResult && apiResult.length > 0 && apiResult[0].investments ?
         apiResult[0].investments
-          .filter(inv => inv.elementname !== 'Unallocated')
           .map((inv, idx) => {
             const name = inv.elementname;
+            // Use a neutral color for Unallocated
+            const color = name === 'Unallocated' ? '#e5e7eb' : investmentColors[idx % investmentColors.length];
             return {
               label: name,
               data: apiResult.map(y => {
                 const found = y.investments.find(i => i.elementname === name);
                 return found ? found.investment_amount : null;
               }),
-              borderColor: investmentColors[idx % investmentColors.length],
-              backgroundColor: investmentColors[idx % investmentColors.length] + '33',
+              borderColor: color,
+              backgroundColor: color + '33',
               tension: 0.1,
               fill: false,
-              pointBackgroundColor: investmentColors[idx % investmentColors.length],
+              pointBackgroundColor: color,
               pointBorderColor: '#fff',
               pointBorderWidth: 2,
               pointRadius: 2,

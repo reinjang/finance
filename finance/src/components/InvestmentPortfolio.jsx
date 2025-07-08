@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Pie } from "react-chartjs-2";
 import { Chart, ArcElement, Tooltip, Legend } from "chart.js";
 Chart.register(ArcElement, Tooltip, Legend);
 
 export default function InvestmentPortfolio({ investments, setInvestments, onChange }) {
   const [input, setInput] = useState({ name: "", ratio: "", performance: "" });
+  const pieRef = useRef();
 
   const totalRatio = investments.reduce((sum, inv) => sum + Number(inv.ratio), 0);
 
@@ -28,6 +29,26 @@ export default function InvestmentPortfolio({ investments, setInvestments, onCha
 
   const handleRemove = idx => {
     setInvestments(investments.filter((_, i) => i !== idx));
+    onChange && onChange();
+  };
+
+  // Helper to find if input name matches an existing investment (case-insensitive)
+  const matchIdx = investments.findIndex(inv => inv.name.trim().toLowerCase() === input.name.trim().toLowerCase());
+
+  const handleSave = () => {
+    if (matchIdx === -1) return;
+    const updated = investments.map((inv, idx) =>
+      idx === matchIdx ? { ...inv, ratio: input.ratio, performance: input.performance } : inv
+    );
+    setInvestments(updated);
+    setInput({ name: '', ratio: '', performance: '' });
+    onChange && onChange();
+  };
+
+  const handleRemoveSelected = () => {
+    if (matchIdx === -1) return;
+    setInvestments(investments.filter((_, idx) => idx !== matchIdx));
+    setInput({ name: '', ratio: '', performance: '' });
     onChange && onChange();
   };
 
@@ -101,12 +122,26 @@ export default function InvestmentPortfolio({ investments, setInvestments, onCha
     }
   };
 
+  const handlePieClick = (event) => {
+    const chart = pieRef.current;
+    if (!chart) return;
+    const elements = chart.getElementsAtEventForMode(event, 'nearest', { intersect: true }, true);
+    if (elements.length > 0) {
+      const idx = elements[0].index;
+      // Ignore Unallocated slice
+      if (investments.length && idx < investments.length) {
+        const inv = investments[idx];
+        setInput({ name: inv.name, ratio: inv.ratio, performance: inv.performance });
+      }
+    }
+  };
+
   return (
     <div className="card h-full flex flex-col">
       <h2>Investment Portfolio</h2>
       <div className="flex-1 flex flex-col min-h-0">
         <div style={{ height: '55%', marginBottom: '0.2rem' }}>
-          <Pie data={pieData} options={chartOptions} />
+          <Pie ref={pieRef} data={pieData} options={chartOptions} onClick={handlePieClick} />
         </div>
         
         <div className="space-y-1 flex-shrink-0">
@@ -133,10 +168,21 @@ export default function InvestmentPortfolio({ investments, setInvestments, onCha
             onChange={e => setInput(i => ({ ...i, performance: e.target.value }))}
             required
           />
-          <div className="w-full">
-            <button type="button" className="primary-action w-full" onClick={handleAdd}>
-              Add Investment
-            </button>
+          <div className="w-full flex gap-2">
+            {matchIdx !== -1 && input.name.trim() ? (
+              <>
+                <button type="button" className="danger w-1/2" onClick={handleRemoveSelected}>
+                  Remove Investment
+                </button>
+                <button type="button" className="primary-action w-1/2" onClick={handleSave}>
+                  Save Changes
+                </button>
+              </>
+            ) : (
+              <button type="button" className="primary-action w-full" onClick={handleAdd}>
+                Add Investment
+              </button>
+            )}
           </div>
         </div>
         
@@ -164,12 +210,6 @@ export default function InvestmentPortfolio({ investments, setInvestments, onCha
         {totalRatio > 100 && (
           <div className="text-red-400 mt-0.5 text-xs flex-shrink-0">
             Total allocation cannot exceed 100%.
-          </div>
-        )}
-        
-        {totalRatio < 100 && investments.length > 0 && (
-          <div className="text-zinc-400 mt-0.5 text-xs flex-shrink-0">
-            {100 - totalRatio}% unallocated
           </div>
         )}
       </div>
