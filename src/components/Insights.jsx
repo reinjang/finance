@@ -54,7 +54,7 @@ export default function Insights({ form, investments, apiResult, setApiResult, o
 
     console.log('Making API request with data:', requestData);
     
-    fetch("http://127.0.0.1:8000/multiply_dict/", {
+    fetch("http://127.0.0.1:8000/api", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(requestData),
