@@ -64,13 +64,13 @@ def multiply_dict(input_data: FinanceInput):
                     "elementratio": unallocated_ratio,
                     "elementperformance": 0.0,
                     "return": 0.0,
-                    "investment_amount": unallocated_amount
+                    "investment_amount": float(unallocated_amount)
                 })
             year_result["totalsum"] = float(current_networth)
-            year_result["investments"] = investment_returns
+            year_result["investments"] = list(investment_returns)
             results.append(year_result)
             # Calculate networth for next year (income and expenses are yearly)
-            current_networth = current_networth + (income * 12 - expenses * 12) + total_investment_return
+            current_networth = float(current_networth) + (float(income) * 12 - float(expenses) * 12) + float(total_investment_return)
         return {"result": results}
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Invalid input. {str(e)}") 

@@ -97,6 +97,7 @@ export default function Insights({ form, investments, apiResult, setApiResult, o
         pointBorderWidth: 2,
         pointRadius: 2,
         pointHoverRadius: 4,
+        pointHitRadius: 12,
         order: 0,
       },
       // Add a dataset for each investment
@@ -121,6 +122,7 @@ export default function Insights({ form, investments, apiResult, setApiResult, o
               pointBorderWidth: 2,
               pointRadius: 2,
               pointHoverRadius: 4,
+              pointHitRadius: 12,
               borderWidth: 2,
               order: 1,
             };
@@ -160,36 +162,42 @@ export default function Insights({ form, investments, apiResult, setApiResult, o
             const netWorth = context.parsed.y;
             const yearData = apiResult[year];
             const datasetLabel = context.dataset.label;
-            // If this is the Total Net Worth line, show the full breakdown
-            if (datasetLabel === 'Total Net Worth') {
-              let tooltipText = [`Net Worth: €${netWorth.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`];
-              if (yearData && yearData.investments) {
-                tooltipText.push('');
-                tooltipText.push('Investment Breakdown:');
-                yearData.investments.forEach(inv => {
-                  if (inv.elementname !== 'Unallocated') {
-                    tooltipText.push(
-                      `• ${inv.elementname}: €${inv.investment_amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} (${inv.elementratio}%) — Performance this year: €${inv.return !== undefined ? inv.return.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : 'N/A'}`
-                    );
-                  }
-                });
-                const unallocated = yearData.investments.find(inv => inv.elementname === 'Unallocated');
-                if (unallocated && unallocated.investment_amount > 0) {
-                  tooltipText.push(
-                    `• Unallocated: €${unallocated.investment_amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} (${unallocated.elementratio}%)`
-                  );
+            // Calculate change from last year
+            let changeText = 'Change from last year: N/A';
+            if (year > 0) {
+              if (datasetLabel === 'Total Net Worth') {
+                const prev = apiResult[year - 1]?.totalsum;
+                if (prev !== undefined) {
+                  const diff = netWorth - prev;
+                  changeText = `Change from last year: ${diff >= 0 ? '+' : ''}€${diff.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                }
+              } else if (yearData && yearData.investments) {
+                const inv = yearData.investments.find(i => i.elementname === datasetLabel);
+                const prevInv = apiResult[year - 1]?.investments.find(i => i.elementname === datasetLabel);
+                if (inv && prevInv) {
+                  const diff = inv.investment_amount - prevInv.investment_amount;
+                  changeText = `Change from last year: ${diff >= 0 ? '+' : ''}€${diff.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
                 }
               }
-              return tooltipText;
+            }
+            // If this is the Total Net Worth line, show the full breakdown
+            if (datasetLabel === 'Total Net Worth') {
+              return [
+                `Net Worth: €${netWorth.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+                changeText
+              ];
             } else {
               // For individual investment lines, show only the value and performance
               if (yearData && yearData.investments) {
                 const inv = yearData.investments.find(i => i.elementname === datasetLabel);
                 if (inv) {
-                  return `€${inv.investment_amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} — Performance this year: €${inv.return !== undefined ? inv.return.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : 'N/A'}`;
+                  return [
+                    `€${inv.investment_amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} — Performance this year: €${inv.return !== undefined ? inv.return.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : 'N/A'}`,
+                    changeText
+                  ];
                 }
               }
-              return null;
+              return changeText;
             }
           }
         }
@@ -236,7 +244,7 @@ export default function Insights({ form, investments, apiResult, setApiResult, o
     },
     interaction: {
       intersect: false,
-      mode: 'index'
+      mode: 'nearest'
     }
   };
 
