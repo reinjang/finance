@@ -47,24 +47,37 @@ A modern financial planning application that helps you project your net worth ov
 
 ## Deployment
 
-### Option 1: VPS with PM2 + Nginx
+### 🚀 Production Deployment (Recommended)
 
-1. **Run the deployment script**
+For a complete production setup with systemd services, see the comprehensive **[Deployment Guide](README-DEPLOYMENT.md)**.
+
+### Quick Setup Commands:
+```bash
+# Clone and setup
+git clone https://github.com/reinjang/finance.git
+cd finance
+chmod +x *.sh
+
+# Setup services
+sudo ./setup-service.sh
+sudo ./manage-services.sh setup-frontend
+
+# Check status
+sudo ./manage-services.sh status
+```
+
+### Option 1: VPS with Systemd Services (Recommended)
+
+1. **Run the setup scripts**
    ```bash
-   chmod +x deploy.sh
-   ./deploy.sh
+   sudo ./setup-service.sh
+   sudo ./manage-services.sh setup-frontend
    ```
 
-2. **Update domain in nginx config**
+2. **Manage services**
    ```bash
-   sudo nano /etc/nginx/sites-available/finance-planner
-   # Replace 'your-domain.com' with your actual domain
-   ```
-
-3. **Restart services**
-   ```bash
-   sudo systemctl restart nginx
-   pm2 restart all
+   sudo ./manage-services.sh status
+   sudo ./manage-services.sh restart-all
    ```
 
 ### Option 2: Docker
