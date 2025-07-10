@@ -44,7 +44,7 @@ echo "⚙️ Creating environment configuration..."
 cat > .env << EOF
 BACKEND_HOST=0.0.0.0
 BACKEND_PORT=8000
-CORS_ORIGINS=http://localhost:3000,http://92.62.118.113,https://92.62.118.113,http://localhost:5173,http://127.0.0.1:5173
+CORS_ORIGINS=http://localhost:3000,http://YOUR_VPS_IP,https://YOUR_VPS_IP,http://localhost:5173,http://127.0.0.1:5173
 NODE_ENV=production
 EOF
 
@@ -80,5 +80,5 @@ echo "   Disable:    sudo systemctl disable $SERVICE_NAME"
 echo ""
 echo "🌐 Test the API:"
 echo "   Health:     curl http://localhost:8000/health"
-echo "   Docs:       http://92.62.118.113:8000/docs"
+echo "   Docs:       http://YOUR_VPS_IP:8000/docs"
 echo "" 

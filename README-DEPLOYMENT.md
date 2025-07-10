@@ -249,10 +249,26 @@ du -sh /var/www/finance-planner/*
 
 ### Environment Variables
 Location: `/var/www/finance-planner/.env`
+
+**⚠️ SECURITY WARNING**: Never commit real IP addresses to git!
+
+1. **Copy the template**:
+   ```bash
+   cp env.template .env.production
+   ```
+
+2. **Edit with your actual values**:
+   ```bash
+   nano .env.production
+   # Replace YOUR_VPS_IP with your actual VPS IP
+   ```
+
+Example:
 ```bash
 BACKEND_HOST=0.0.0.0
 BACKEND_PORT=8000
-CORS_ORIGINS=http://localhost:3000,http://YOUR_VPS_IP,https://YOUR_VPS_IP
+CORS_ORIGINS=http://localhost:3000,http://203.0.113.1,https://203.0.113.1
+VITE_API_URL=http://203.0.113.1:8000
 NODE_ENV=production
 ```
 

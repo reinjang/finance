@@ -90,7 +90,7 @@ curl http://localhost:8000/health
 
 ### API Documentation
 - **Local**: http://localhost:8000/docs
-- **Remote**: http://92.62.118.113:8000/docs
+- **Remote**: http://YOUR_VPS_IP:8000/docs
 
 ### Test API Endpoint
 ```bash
@@ -118,7 +118,7 @@ The service uses these environment variables (set in `/var/www/finance-planner/.
 ```bash
 BACKEND_HOST=0.0.0.0
 BACKEND_PORT=8000
-CORS_ORIGINS=http://localhost:3000,http://92.62.118.113,https://92.62.118.113
+CORS_ORIGINS=http://localhost:3000,http://YOUR_VPS_IP,https://YOUR_VPS_IP
 NODE_ENV=production
 ```
 

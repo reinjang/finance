@@ -95,13 +95,25 @@ sudo ./manage-services.sh status
 
 ## Environment Variables
 
-Create a `.env` file based on `env.example`:
+**⚠️ SECURITY WARNING**: Never commit real IP addresses or sensitive data to git!
 
+Create a `.env` file based on `env.template`:
+
+```bash
+# Copy template
+cp env.template .env.production
+
+# Edit with your actual values
+nano .env.production
+# Replace YOUR_VPS_IP with your actual VPS IP
+```
+
+Example:
 ```bash
 BACKEND_HOST=0.0.0.0
 BACKEND_PORT=8000
-CORS_ORIGINS=http://localhost:3000,http://your-domain.com
-VITE_API_URL=http://localhost:8000
+CORS_ORIGINS=http://localhost:3000,http://203.0.113.1,https://203.0.113.1
+VITE_API_URL=http://203.0.113.1:8000
 NODE_ENV=production
 ```
 

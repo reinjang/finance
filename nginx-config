@@ -1,6 +1,6 @@
 server {
     listen 80;
-    server_name 92.62.118.113;
+    server_name YOUR_VPS_IP;
 
     # API endpoints
     location /api {
