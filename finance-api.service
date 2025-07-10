@@ -5,11 +5,11 @@ Wants=network.target
 
 [Service]
 Type=exec
-User=www-data
-Group=www-data
-WorkingDirectory=/var/www/finance-planner
-Environment=PATH=/var/www/finance-planner/venv/bin
-ExecStart=/var/www/finance-planner/venv/bin/uvicorn main:app --host 0.0.0.0 --port 8000
+User=root
+Group=root
+WorkingDirectory=/root/finance
+Environment=PATH=/root/finance/venv/bin
+ExecStart=/root/finance/venv/bin/uvicorn main:app --host 0.0.0.0 --port 8000
 ExecReload=/bin/kill -HUP $MAINPID
 Restart=always
 RestartSec=5

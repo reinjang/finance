@@ -5,9 +5,9 @@ Wants=network.target
 
 [Service]
 Type=exec
-User=www-data
-Group=www-data
-WorkingDirectory=/var/www/finance-planner
+User=root
+Group=root
+WorkingDirectory=/root/finance
 Environment=PATH=/usr/bin:/usr/local/bin
 ExecStart=/usr/bin/npm start
 ExecReload=/bin/kill -HUP $MAINPID

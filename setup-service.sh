@@ -11,7 +11,7 @@ fi
 
 # Set variables
 SERVICE_NAME="finance-api"
-APP_DIR="/var/www/finance-planner"
+APP_DIR="/root/finance"
 SERVICE_FILE="/etc/systemd/system/${SERVICE_NAME}.service"
 
 echo "📁 Setting up application directory..."

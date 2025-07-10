@@ -9,7 +9,7 @@ if [ "$EUID" -ne 0 ]; then
     exit 1
 fi
 
-APP_DIR="/var/www/finance-planner"
+APP_DIR="/root/finance"
 CONFIG_FILE="$APP_DIR/public/config.js"
 
 # Get VPS IP address
