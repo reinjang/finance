@@ -7,7 +7,7 @@ import os
 app = FastAPI(title="Finance Planner API", version="1.0.0")
 
 # Get CORS origins from environment variable or use defaults
-cors_origins = os.getenv("CORS_ORIGINS", "http://localhost:8080,http://127.0.0.1:8080,http://localhost:5173,http://127.0.0.1:5173").split(",")
+cors_origins = os.getenv("CORS_ORIGINS", "http://localhost:8080,http://127.0.0.1:8080,http://localhost:5173,http://127.0.0.1:5173,http://92.62.118.113:3000,http://localhost:3000").split(",")
 
 app.add_middleware(
     CORSMiddleware,

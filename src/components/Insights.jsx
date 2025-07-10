@@ -273,7 +273,7 @@ export default function Insights({ form, investments, apiResult, setApiResult, o
         <div className="text-red-400 text-center py-1 flex-1 flex items-center justify-center">
           Error: {error}
           <br />
-          <small>Make sure your FastAPI backend is running on http://127.0.0.1:8000</small>
+          <small>Make sure your FastAPI backend is running on {window.FINANCE_CONFIG?.API_URL || 'http://localhost:8000'}</small>
         </div>
       )}
       
