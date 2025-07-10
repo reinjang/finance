@@ -55,9 +55,14 @@ export default function Insights({ form, investments, apiResult, setApiResult, o
     console.log('Making API request with data:', requestData);
     
     const apiUrl = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000";
+    console.log('Using API URL:', apiUrl);
+    
     fetch(`${apiUrl}/api`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { 
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
       body: JSON.stringify(requestData),
     })
       .then(res => {

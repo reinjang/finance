@@ -7,7 +7,7 @@ import os
 app = FastAPI(title="Finance Planner API", version="1.0.0")
 
 # Get CORS origins from environment variable or use defaults
-cors_origins = os.getenv("CORS_ORIGINS", "http://localhost:8080,http://127.0.0.1:8080,http://localhost:5173,http://127.0.0.1:5173").split(",")
+cors_origins = os.getenv("CORS_ORIGINS", "http://localhost:8080,http://127.0.0.1:8080,http://localhost:5173,http://127.0.0.1:5173,http://92.62.118.113,https://92.62.118.113").split(",")
 
 app.add_middleware(
     CORSMiddleware,
@@ -32,6 +32,10 @@ class FinanceInput(BaseModel):
     income: float
     expenses: float
     investments: List[Investment]
+
+@app.get("/health")
+def health_check():
+    return {"status": "healthy", "message": "Finance Planner API is running"}
 
 @app.post("/api")
 def api(input_data: FinanceInput):
