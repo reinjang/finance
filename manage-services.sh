@@ -87,6 +87,20 @@ setup_frontend_service() {
         sudo -u www-data npm install
     fi
     
+    # Update runtime configuration
+    echo "⚙️ Updating runtime configuration..."
+    VPS_IP=$(hostname -I | awk '{print $1}' | head -1)
+    cat > "public/config.js" << EOF
+// Runtime configuration for Finance Planner
+// This file can be updated without rebuilding the application
+window.FINANCE_CONFIG = {
+  API_URL: 'http://$VPS_IP:8000',
+  APP_TITLE: 'Finance Planner'
+};
+EOF
+    chown www-data:www-data public/config.js
+    chmod 644 public/config.js
+
     # Build frontend if needed
     if [ ! -d "dist" ]; then
         echo "🔨 Building frontend..."

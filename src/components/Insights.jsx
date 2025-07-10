@@ -54,7 +54,10 @@ export default function Insights({ form, investments, apiResult, setApiResult, o
 
     console.log('Making API request with data:', requestData);
     
-    const apiUrl = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000";
+    // Get API URL from runtime configuration
+    const apiUrl = window.FINANCE_CONFIG?.API_URL || 
+                   import.meta.env.VITE_API_URL || 
+                   (window.location.hostname === 'localhost' ? 'http://127.0.0.1:8000' : `http://${window.location.hostname}:8000`);
     console.log('Using API URL:', apiUrl);
     
     fetch(`${apiUrl}/api`, {
