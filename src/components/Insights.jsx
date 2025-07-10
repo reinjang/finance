@@ -60,7 +60,7 @@ export default function Insights({ form, investments, apiResult, setApiResult, o
                    (window.location.hostname === 'localhost' ? 'http://127.0.0.1:8000' : `http://${window.location.hostname}:8000`);
     console.log('Using API URL:', apiUrl);
     
-    fetch(`${apiUrl}/api`, {
+    fetch(`${apiUrl}`, {
       method: "POST",
       headers: { 
         "Content-Type": "application/json",
