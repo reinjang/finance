@@ -39,8 +39,17 @@ export default function AuthModule() {
       resetForms();
     } catch (err) {
       let msg = 'Login failed.';
-      if (err?.data?.message) msg = err.data.message;
-      else if (err?.message) msg = err.message;
+      // PocketBase error structure
+      const raw = err?.data?.message || err?.message || '';
+      if (!email || !password) {
+        msg = 'Please enter both email and password.';
+      } else if (raw.toLowerCase().includes('authenticate') || raw.toLowerCase().includes('invalid')) {
+        msg = 'Invalid email or password. Please try again.';
+      } else if (err?.status === 0 || raw.toLowerCase().includes('network')) {
+        msg = 'Network error. Please check your connection and try again.';
+      } else if (raw) {
+        msg = raw;
+      }
       setMessage(msg);
     } finally {
       setLoading(false);
@@ -52,18 +61,40 @@ export default function AuthModule() {
     setLoading(true);
     setMessage('');
     try {
+      if (!email || !password || !passwordConfirm) {
+        setMessage('Please fill in all fields.');
+        setLoading(false);
+        return;
+      }
+      if (password !== passwordConfirm) {
+        setMessage('Passwords do not match.');
+        setLoading(false);
+        return;
+      }
       await pb.collection('users').create({ email, password, passwordConfirm });
       setMessage('Account created! You can now log in.');
       setShowRegister(false);
       resetForms();
     } catch (err) {
       let msg = 'Account creation failed.';
-      if (err?.data?.data?.email?.message && err?.data?.data?.email?.message.includes('admin')) {
+      const raw = err?.data?.message || err?.message || '';
+      // PocketBase field errors
+      const emailErr = err?.data?.data?.email?.message || '';
+      const passErr = err?.data?.data?.password?.message || '';
+      if (emailErr.toLowerCase().includes('admin')) {
         msg = 'You cannot register with the admin/superuser email.';
-      } else if (err?.data?.message) {
-        msg = err.data.message;
-      } else if (err?.message) {
-        msg = err.message;
+      } else if (emailErr.toLowerCase().includes('already')) {
+        msg = 'This email is already registered. Please log in or use a different email.';
+      } else if (emailErr.toLowerCase().includes('invalid')) {
+        msg = 'Please enter a valid email address.';
+      } else if (passErr.toLowerCase().includes('short')) {
+        msg = 'Password is too short. Please use a longer password.';
+      } else if (passErr.toLowerCase().includes('weak')) {
+        msg = 'Password is too weak. Please use a stronger password.';
+      } else if (raw.toLowerCase().includes('network')) {
+        msg = 'Network error. Please check your connection and try again.';
+      } else if (raw) {
+        msg = raw;
       }
       setMessage(msg);
     } finally {
