@@ -8,4 +8,12 @@ export default defineConfig({
     // Make environment variables available at runtime
     'process.env.VITE_API_URL': JSON.stringify(process.env.VITE_API_URL || 'http://127.0.0.1:8000'),
   },
+  build: {
+    rollupOptions: {
+      input: {
+        main: 'index.html'
+      }
+    }
+  },
+  publicDir: 'public'
 })
