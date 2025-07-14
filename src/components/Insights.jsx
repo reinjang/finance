@@ -145,6 +145,7 @@ export default function Insights({ form, investments, apiResult, setApiResult, o
     plugins: {
       legend: {
         position: 'top',
+        align: 'center',
         labels: {
           color: '#495057',
           font: {
