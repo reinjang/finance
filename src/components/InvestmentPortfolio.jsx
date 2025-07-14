@@ -82,7 +82,7 @@ export default function InvestmentPortfolio({ investments, setInvestments, onCha
         labels: {
           color: '#22223B',
           font: {
-            size: 16
+            size: 13
           }
         }
       },
@@ -92,6 +92,8 @@ export default function InvestmentPortfolio({ investments, setInvestments, onCha
         bodyColor: '#495057',
         borderColor: '#b6c6e3',
         borderWidth: 1,
+        titleFont: { size: 13 },
+        bodyFont: { size: 13 },
         callbacks: {
           title: function(context) {
             return context[0].label;
