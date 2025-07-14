@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PocketBase from 'pocketbase';
 
-const pb = new PocketBase('https://<your-domain>/pb'); // TODO: Replace with your actual domain
+const pb = new PocketBase('https://clarifi.nl/pb');
 
 export default function AuthModule() {
   const [showLogin, setShowLogin] = useState(false);
