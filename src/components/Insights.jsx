@@ -3,6 +3,10 @@ import { Line } from "react-chartjs-2";
 import { Chart, LineElement, PointElement, LinearScale, CategoryScale, Tooltip, Legend } from "chart.js";
 Chart.register(LineElement, PointElement, LinearScale, CategoryScale, Tooltip, Legend);
 
+// Set Chart.js global defaults for font size and family
+Chart.defaults.font.size = 13;
+Chart.defaults.font.family = 'Nunito, Inter, sans-serif';
+
 export default function Insights({ form, investments, apiResult, setApiResult, onSubmit }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
