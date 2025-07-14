@@ -15,5 +15,8 @@ export default defineConfig({
       }
     }
   },
-  publicDir: 'public'
+  publicDir: 'public',
+  preview: {
+    allowedHosts: ['www.clarifi.nl']
+  }
 })
