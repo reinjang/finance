@@ -260,17 +260,17 @@ export default function Insights({ form, investments, apiResult, setApiResult, o
   const hasRequiredData = form.networth && form.income && form.expenses && investments.length > 0;
 
   return (
-    <div className="card h-full flex flex-col">
-      <h2>Financial Projections</h2>
+    <div className="card h-full flex flex-col p-2 pb-1 mb-1">
+      <h2 className="text-xs font-bold mb-1">Financial Projections</h2>
       
       {loading && (
-        <div className="text-zinc-300 text-center py-2 flex-1 flex items-center justify-center">
+        <div className="text-zinc-300 text-center py-1 flex-1 flex items-center justify-center text-xs">
           Calculating your financial projections...
         </div>
       )}
       
       {error && (
-        <div className="text-red-400 text-center py-1 flex-1 flex items-center justify-center">
+        <div className="text-red-400 text-center py-0.5 flex-1 flex items-center justify-center text-xs">
           Error: {error}
           <br />
           <small>Make sure your FastAPI backend is running on {window.FINANCE_CONFIG?.API_URL || 'http://localhost:8000'}</small>
@@ -278,22 +278,46 @@ export default function Insights({ form, investments, apiResult, setApiResult, o
       )}
       
       {apiResult && apiResult.length > 0 && !loading && !error && (
-        <div className="flex-1 min-h-[350px] sm:min-h-[500px] px-2 pb-2 pt-4">
-          <Line data={chartData} options={chartOptions} />
+        <div className="flex-1 min-h-[200px] sm:min-h-[300px] px-1 pb-1 pt-2">
+          <Line data={chartData} options={{
+            ...chartOptions,
+            plugins: {
+              ...chartOptions.plugins,
+              legend: {
+                ...chartOptions.plugins.legend,
+                labels: {
+                  ...chartOptions.plugins.legend.labels,
+                  font: { size: 10, weight: 'normal', family: 'Nunito, Inter, sans-serif' },
+                  boxWidth: 14,
+                  padding: 8,
+                }
+              }
+            },
+            scales: {
+              x: {
+                ...chartOptions.scales.x,
+                ticks: { ...chartOptions.scales.x.ticks, font: { size: 10, family: 'Nunito, Inter, sans-serif' } }
+              },
+              y: {
+                ...chartOptions.scales.y,
+                ticks: { ...chartOptions.scales.y.ticks, font: { size: 10, family: 'Nunito, Inter, sans-serif' } }
+              }
+            }
+          }} />
         </div>
       )}
       
       {apiResult && apiResult.length > 0 && (
-        <div className="mt-4 p-4 bg-white/80 rounded-xl flex-shrink-0 shadow-sm border border-[#e3e8f0]">
-          <h3 className="text-sm font-bold mb-2 text-[#495057]">Summary</h3>
-          <div className="grid grid-cols-2 gap-2 text-base">
+        <div className="mt-1 p-2 bg-white/80 rounded-xl flex-shrink-0 shadow-sm border border-[#e3e8f0]">
+          <h3 className="text-xs font-bold mb-1 text-[#495057]">Summary</h3>
+          <div className="grid grid-cols-2 gap-1 text-xs">
             <div>
               <span className="text-[#7b8794]">Starting Net Worth:</span>
-              <div className="font-bold text-[#22223B] text-lg">€{Number(form.networth).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
+              <div className="font-bold text-[#22223B] text-xs">€{Number(form.networth).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
             </div>
             <div>
               <span className="text-[#7b8794]">Projected Net Worth (10 years):</span>
-              <div className="font-bold text-green-500 text-lg">
+              <div className="font-bold text-green-500 text-xs">
                 €{apiResult[apiResult.length - 1]?.totalsum.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) || 'N/A'}
               </div>
             </div>
@@ -302,7 +326,7 @@ export default function Insights({ form, investments, apiResult, setApiResult, o
       )}
       
       {/* Add a subtle divider below the button */}
-      <div className="w-full h-2 mb-2 bg-gradient-to-r from-transparent via-[#e3e8f0] to-transparent rounded-full" />
+      <div className="w-full h-1 mb-1 bg-gradient-to-r from-transparent via-[#e3e8f0] to-transparent rounded-full" />
     </div>
   );
 }
