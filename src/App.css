@@ -95,7 +95,7 @@ body, #root {
 }
 
 .primary-action {
-  background: linear-gradient(90deg, #38bdf8 0%, #34d399 100%) !important;
+  background: #38bdf8 !important;
   color: #fff;
   border: none;
   border-radius: 0.4rem;
@@ -109,7 +109,7 @@ body, #root {
   letter-spacing: 0.01em;
 }
 .primary-action:hover {
-  background: linear-gradient(90deg, #34d399 0%, #38bdf8 100%) !important;
+  background: #0ea5e9 !important;
   transform: translateY(-1px) scale(1.01);
   box-shadow: 0 0 8px 1px #38bdf855;
 }

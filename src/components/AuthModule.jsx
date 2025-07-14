@@ -81,15 +81,15 @@ export default function AuthModule() {
         </div>
       ) : (
         <div className="flex flex-col items-start gap-2 w-full">
-          <div className="flex gap-3 mb-2">
+          <div className="flex gap-3 mb-2 w-full">
             <button
-              className="primary-action text-base"
+              className="primary-action text-base flex-1 w-full"
               onClick={() => { setShowLogin(!showLogin); setShowRegister(false); setMessage(''); }}
             >
               Login
             </button>
             <button
-              className="primary-action text-base"
+              className="primary-action text-base flex-1 w-full"
               onClick={() => { setShowRegister(!showRegister); setShowLogin(false); setMessage(''); }}
             >
               Create Account
