@@ -186,27 +186,6 @@ export default function InvestmentPortfolio({ investments, setInvestments, onCha
           </div>
         </div>
         
-        {investments.length > 0 && (
-          <ul className="flex-1 overflow-y-auto mt-1 min-h-0">
-            {investments.map((inv, idx) => (
-              <li key={idx}>
-                <span>
-                  <b>{inv.name}</b> - {inv.ratio}% - {inv.performance}%
-                </span>
-                <button
-                  onClick={() => handleRemove(idx)}
-                  type="button"
-                  style={{ background: '#f87171', color: '#fff', borderRadius: '0.5rem', padding: '0.2rem 0.7rem', fontWeight: 600, fontSize: '0.9rem', boxShadow: '0 1px 4px #f8717122', border: 'none', transition: 'background 0.2s' }}
-                  onMouseOver={e => e.currentTarget.style.background = '#ef4444'}
-                  onMouseOut={e => e.currentTarget.style.background = '#f87171'}
-                >
-                  Remove
-                </button>
-              </li>
-            ))}
-          </ul>
-        )}
-        
         {totalRatio > 100 && (
           <div className="text-red-400 mt-0.5 text-xs flex-shrink-0">
             Total allocation cannot exceed 100%.
