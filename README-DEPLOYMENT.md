@@ -8,6 +8,7 @@ This guide covers everything you need to deploy and manage the Finance Planner a
 - **Backend**: FastAPI + Python (Port 8000)
 - **Reverse Proxy**: Nginx (Port 80)
 - **Process Management**: Systemd services
+- **Database**: PocketBase (Port 8090, web admin UI at /_/)
 
 ## 🚀 Initial Deployment
 
@@ -50,6 +51,14 @@ sudo ln -s /etc/nginx/sites-available/finance-api /etc/nginx/sites-enabled/
 sudo nginx -t
 sudo systemctl restart nginx
 ```
+
+### PocketBase Admin UI
+
+After deployment, PocketBase will be running on port 8090. Access the admin UI at:
+
+    http://your-domain.com:8090/_/
+
+You can create collections, fields, and manage your database from this web interface. For security, consider restricting access to this port or using a VPN in production environments.
 
 ## 🔧 Service Management
 

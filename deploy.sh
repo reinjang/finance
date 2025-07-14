@@ -58,6 +58,19 @@ VITE_API_URL=http://localhost:8000
 NODE_ENV=production
 EOF
 
+# Install PocketBase
+POCKETBASE_VERSION="0.24.6"
+POCKETBASE_DIR="/var/www/finance-planner/pbdata"
+POCKETBASE_BIN="/var/www/finance-planner/pocketbase"
+
+if [ ! -f "$POCKETBASE_BIN" ]; then
+  echo "📦 Installing PocketBase..."
+  wget -O pocketbase.zip "https://github.com/pocketbase/pocketbase/releases/download/v$POCKETBASE_VERSION/pocketbase_${POCKETBASE_VERSION}_linux_amd64.zip"
+  unzip pocketbase.zip -d /var/www/finance-planner/
+  rm pocketbase.zip
+  mkdir -p "$POCKETBASE_DIR"
+fi
+
 # Setup PM2 ecosystem
 echo "⚡ Setting up PM2 configuration..."
 cat > ecosystem.config.js << EOF
@@ -80,6 +93,13 @@ module.exports = {
       env: {
         NODE_ENV: 'production'
       }
+    },
+    {
+      name: 'pocketbase',
+      script: './pocketbase',
+      args: 'serve --http=0.0.0.0:8090 --dir=pbdata',
+      cwd: '/var/www/finance-planner',
+      env: {}
     }
   ]
 };
@@ -135,4 +155,5 @@ echo "✅ Deployment complete!"
 echo "🌐 Your application should be available at: http://your-domain.com"
 echo "📊 PM2 Status: pm2 status"
 echo "📝 Logs: pm2 logs"
-echo "🔄 Restart: pm2 restart all" 
+echo "🔄 Restart: pm2 restart all"
+echo "🗄️ PocketBase Admin UI: http://your-domain.com:8090/_/" 

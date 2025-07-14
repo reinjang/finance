@@ -9,11 +9,12 @@ A modern financial planning application that helps you project your net worth ov
 - 🎯 **10-Year Projections**: See how your net worth will grow over time
 - 🌙 **Neon Dark UI**: Modern, responsive design with Tailwind CSS
 - ⚡ **Fast API**: Backend powered by FastAPI for quick calculations
+- 🗄️ **PocketBase Database**: Embedded database with web admin UI (http://your-domain.com:8090/_/)
 
 ## Tech Stack
 
 - **Frontend**: React 19 + Vite + Tailwind CSS + Chart.js
-- **Backend**: FastAPI + Python
+- **Backend**: FastAPI + Python, PocketBase (embedded DB with admin UI)
 - **Deployment**: PM2 + Nginx (or Docker)
 
 ## Quick Start
@@ -46,6 +47,14 @@ A modern financial planning application that helps you project your net worth ov
    - Backend API: http://localhost:8000/docs
 
 ## Deployment
+
+### PocketBase Database
+
+PocketBase is automatically installed and started as part of the deployment. It provides a web-based admin UI for managing your app's database, accessible at:
+
+    http://your-domain.com:8090/_/
+
+You can create collections, fields, and manage data directly from this UI after deployment.
 
 ### 🚀 Production Deployment (Recommended)
 
