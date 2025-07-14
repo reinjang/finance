@@ -17,6 +17,6 @@ export default defineConfig({
   },
   publicDir: 'public',
   preview: {
-    allowedHosts: ['www.clarifi.nl']
+    allowedHosts: ['clarifi.nl', 'www.clarifi.nl']
   }
 })
