@@ -7,9 +7,9 @@ Wants=network.target
 Type=exec
 User=root
 Group=root
-WorkingDirectory=/root/finance
+WorkingDirectory=/var/www/finance
 Environment=PATH=/usr/bin:/usr/local/bin
-ExecStart=/usr/bin/npm start
+ExecStart=/usr/bin/npm run preview -- --host 0.0.0.0 --port 3000
 ExecReload=/bin/kill -HUP $MAINPID
 Restart=always
 RestartSec=5
@@ -22,7 +22,7 @@ NoNewPrivileges=true
 PrivateTmp=true
 ProtectSystem=strict
 ProtectHome=true
-ReadWritePaths=/var/www/finance-planner
+ReadWritePaths=/var/www/finance
 
 # Resource limits
 LimitNOFILE=65536

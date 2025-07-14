@@ -113,7 +113,7 @@ curl -X POST http://localhost:8000/api \
 ## 🔧 Configuration
 
 ### Environment Variables
-The service uses these environment variables (set in `/var/www/finance-planner/.env`):
+The service uses these environment variables (set in `/var/www/finance/.env`):
 
 ```bash
 BACKEND_HOST=0.0.0.0
@@ -124,8 +124,8 @@ NODE_ENV=production
 
 ### Service Configuration
 The service runs as `www-data` user with:
-- **Working Directory**: `/var/www/finance-planner`
-- **Python Environment**: `/var/www/finance-planner/venv`
+- **Working Directory**: `/var/www/finance`
+- **Python Environment**: `/var/www/finance/venv`
 - **Port**: 8000
 - **Auto-restart**: Yes (5 seconds delay)
 - **Memory Limit**: 512MB

@@ -26,13 +26,13 @@ sudo npm install -g pm2
 
 # Create application directory
 echo "📁 Setting up application directory..."
-sudo mkdir -p /var/www/finance-planner
-sudo chown $USER:$USER /var/www/finance-planner
+sudo mkdir -p /var/www/finance
+sudo chown $USER:$USER /var/www/finance
 
 # Copy application files (assuming you're running this from the project directory)
 echo "📋 Copying application files..."
-cp -r . /var/www/finance-planner/
-cd /var/www/finance-planner
+cp -r . /var/www/finance/
+cd /var/www/finance
 
 # Install frontend dependencies
 echo "📦 Installing frontend dependencies..."
@@ -60,13 +60,13 @@ EOF
 
 # Install PocketBase
 POCKETBASE_VERSION="0.24.6"
-POCKETBASE_DIR="/var/www/finance-planner/pbdata"
-POCKETBASE_BIN="/var/www/finance-planner/pocketbase"
+POCKETBASE_DIR="/var/www/finance/pbdata"
+POCKETBASE_BIN="/var/www/finance/pocketbase"
 
 if [ ! -f "$POCKETBASE_BIN" ]; then
   echo "📦 Installing PocketBase..."
   wget -O pocketbase.zip "https://github.com/pocketbase/pocketbase/releases/download/v$POCKETBASE_VERSION/pocketbase_${POCKETBASE_VERSION}_linux_amd64.zip"
-  unzip pocketbase.zip -d /var/www/finance-planner/
+  unzip pocketbase.zip -d /var/www/finance/
   rm pocketbase.zip
   mkdir -p "$POCKETBASE_DIR"
 fi
@@ -80,7 +80,7 @@ module.exports = {
       name: 'finance-backend',
       script: 'venv/bin/uvicorn',
       args: 'main:app --host 0.0.0.0 --port 8000',
-      cwd: '/var/www/finance-planner',
+      cwd: '/var/www/finance',
       env: {
         NODE_ENV: 'production'
       }
@@ -89,7 +89,7 @@ module.exports = {
       name: 'finance-frontend',
       script: 'npm',
       args: 'start',
-      cwd: '/var/www/finance-planner',
+      cwd: '/var/www/finance',
       env: {
         NODE_ENV: 'production'
       }
@@ -98,7 +98,7 @@ module.exports = {
       name: 'pocketbase',
       script: './pocketbase',
       args: 'serve --http=0.0.0.0:8090 --dir=pbdata',
-      cwd: '/var/www/finance-planner',
+      cwd: '/var/www/finance',
       env: {}
     }
   ]
@@ -113,7 +113,7 @@ pm2 startup
 
 # Setup nginx configuration
 echo "🌐 Setting up nginx..."
-sudo tee /etc/nginx/sites-available/finance-planner << EOF
+sudo tee /etc/nginx/sites-available/finance << EOF
 server {
     listen 80;
     server_name your-domain.com www.your-domain.com;
@@ -147,7 +147,7 @@ server {
 EOF
 
 # Enable site and restart nginx
-sudo ln -sf /etc/nginx/sites-available/finance-planner /etc/nginx/sites-enabled/
+sudo ln -sf /etc/nginx/sites-available/finance /etc/nginx/sites-enabled/
 sudo nginx -t
 sudo systemctl restart nginx
 

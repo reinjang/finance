@@ -136,7 +136,7 @@ sudo ./manage-services.sh kill-background
 
 ### Backend Service (`finance-api`)
 - **Service File**: `/etc/systemd/system/finance-api.service`
-- **Working Directory**: `/var/www/finance-planner`
+- **Working Directory**: `/var/www/finance`
 - **User**: `www-data`
 - **Port**: 8000
 - **Auto-restart**: Yes (5s delay)
@@ -144,7 +144,7 @@ sudo ./manage-services.sh kill-background
 
 ### Frontend Service (`finance-frontend`)
 - **Service File**: `/etc/systemd/system/finance-frontend.service`
-- **Working Directory**: `/var/www/finance-planner`
+- **Working Directory**: `/var/www/finance`
 - **User**: `www-data`
 - **Port**: 3000
 - **Auto-restart**: Yes (5s delay)
@@ -257,7 +257,7 @@ du -sh /var/www/finance-planner/*
 ## 🔧 Configuration Files
 
 ### Environment Variables
-Location: `/var/www/finance-planner/.env`
+Location: `/var/www/finance/.env`
 
 **⚠️ SECURITY WARNING**: Never commit real IP addresses to git!
 
@@ -319,7 +319,7 @@ sudo ./manage-services.sh restart-all
 ### Backup and Restore
 ```bash
 # Create backup
-sudo tar -czf finance-backup-$(date +%Y%m%d).tar.gz /var/www/finance-planner
+sudo tar -czf finance-backup-$(date +%Y%m%d).tar.gz /var/www/finance
 
 # Restore from backup
 sudo tar -xzf finance-backup-YYYYMMDD.tar.gz -C /

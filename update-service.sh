@@ -10,7 +10,7 @@ if [ "$EUID" -ne 0 ]; then
 fi
 
 SERVICE_NAME="finance-api"
-APP_DIR="/var/www/finance-planner"
+APP_DIR="/var/www/finance"
 
 echo "📁 Updating application files..."
 cd $APP_DIR

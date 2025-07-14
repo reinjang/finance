@@ -11,7 +11,7 @@ fi
 
 SERVICE_API="finance-api"
 SERVICE_FRONTEND="finance-frontend"
-APP_DIR="/root/finance"
+APP_DIR="/var/www/finance"
 
 # Function to check if service exists
 service_exists() {
