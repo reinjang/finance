@@ -1,5 +1,17 @@
 import React from "react";
 
+function formatNumber(value) {
+  if (value === undefined || value === null || value === "") return "";
+  const num = Number(value.toString().replace(/\./g, ""));
+  if (isNaN(num)) return "";
+  return num.toLocaleString('de-DE');
+}
+
+function parseNumber(str) {
+  if (!str) return "";
+  return str.replace(/\./g, "");
+}
+
 export default function InputCard({ form, setForm, onSubmit }) {
   return (
     <div className="card">
@@ -8,9 +20,13 @@ export default function InputCard({ form, setForm, onSubmit }) {
         <div>
           <label>Net Worth:</label>
           <input
-            type="number"
-            value={form.networth}
-            onChange={e => setForm(f => ({ ...f, networth: e.target.value }))}
+            type="text"
+            inputMode="numeric"
+            value={formatNumber(form.networth)}
+            onChange={e => {
+              const raw = parseNumber(e.target.value);
+              setForm(f => ({ ...f, networth: raw }));
+            }}
             placeholder="Enter your net worth"
             required
           />
@@ -18,9 +34,13 @@ export default function InputCard({ form, setForm, onSubmit }) {
         <div>
           <label>Monthly Income:</label>
           <input
-            type="number"
-            value={form.income}
-            onChange={e => setForm(f => ({ ...f, income: e.target.value }))}
+            type="text"
+            inputMode="numeric"
+            value={formatNumber(form.income)}
+            onChange={e => {
+              const raw = parseNumber(e.target.value);
+              setForm(f => ({ ...f, income: raw }));
+            }}
             placeholder="Enter monthly income"
             required
           />
@@ -28,9 +48,13 @@ export default function InputCard({ form, setForm, onSubmit }) {
         <div>
           <label>Monthly Expenses:</label>
           <input
-            type="number"
-            value={form.expenses}
-            onChange={e => setForm(f => ({ ...f, expenses: e.target.value }))}
+            type="text"
+            inputMode="numeric"
+            value={formatNumber(form.expenses)}
+            onChange={e => {
+              const raw = parseNumber(e.target.value);
+              setForm(f => ({ ...f, expenses: raw }));
+            }}
             placeholder="Enter monthly expenses"
             required
           />

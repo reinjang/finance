@@ -278,7 +278,7 @@ export default function Insights({ form, investments, apiResult, setApiResult, o
       )}
       
       {apiResult && apiResult.length > 0 && !loading && !error && (
-        <div className="flex-1 min-h-[250px] sm:min-h-[350px] px-2 pb-2 pt-4">
+        <div className="flex-1 min-h-[350px] sm:min-h-[500px] px-2 pb-2 pt-4">
           <Line data={chartData} options={chartOptions} />
         </div>
       )}
