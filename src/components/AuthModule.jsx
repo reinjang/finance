@@ -38,7 +38,10 @@ export default function AuthModule() {
       setShowLogin(false);
       resetForms();
     } catch (err) {
-      setMessage(err?.message || 'Login failed.');
+      let msg = 'Login failed.';
+      if (err?.data?.message) msg = err.data.message;
+      else if (err?.message) msg = err.message;
+      setMessage(msg);
     } finally {
       setLoading(false);
     }
@@ -54,7 +57,15 @@ export default function AuthModule() {
       setShowRegister(false);
       resetForms();
     } catch (err) {
-      setMessage(err?.message || 'Account creation failed.');
+      let msg = 'Account creation failed.';
+      if (err?.data?.data?.email?.message && err?.data?.data?.email?.message.includes('admin')) {
+        msg = 'You cannot register with the admin/superuser email.';
+      } else if (err?.data?.message) {
+        msg = err.data.message;
+      } else if (err?.message) {
+        msg = err.message;
+      }
+      setMessage(msg);
     } finally {
       setLoading(false);
     }
@@ -172,7 +183,7 @@ export default function AuthModule() {
             </form>
           )}
           {message && (
-            <div className="mt-2 text-base text-yellow-700 animate-fade-in">
+            <div className="mt-2 text-base text-red-600 font-semibold bg-red-50 border border-red-200 rounded px-3 py-2 animate-fade-in" style={{fontFamily: 'inherit'}}>
               {message}
             </div>
           )}
