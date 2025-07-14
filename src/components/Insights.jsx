@@ -148,7 +148,7 @@ export default function Insights({ form, investments, apiResult, setApiResult, o
         labels: {
           color: '#495057',
           font: {
-            size: 15,
+            size: 13,
             weight: 'bold',
             family: 'Nunito, Inter, sans-serif'
           },
@@ -162,6 +162,8 @@ export default function Insights({ form, investments, apiResult, setApiResult, o
         bodyColor: '#495057',
         borderColor: '#b6c6e3',
         borderWidth: 1,
+        titleFont: { size: 13, family: 'Nunito, Inter, sans-serif' },
+        bodyFont: { size: 13, family: 'Nunito, Inter, sans-serif' },
         callbacks: {
           title: function(context) {
             return context[0].label;
