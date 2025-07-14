@@ -68,7 +68,6 @@ export default function AuthModule() {
 
   return (
     <div className="card p-3 pb-2 mb-2 text-base">
-      <h2 className="text-base font-bold mb-2">Authentication</h2>
       {user ? (
         <div className="flex items-center gap-3 w-full text-base text-gray-700">
           <span>Logged in as: <span className="font-mono text-gray-900">{user.email}</span></span>
