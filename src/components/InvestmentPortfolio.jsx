@@ -82,7 +82,7 @@ export default function InvestmentPortfolio({ investments, setInvestments, onCha
         labels: {
           color: '#22223B',
           font: {
-            size: 10
+            size: 16
           }
         }
       },
@@ -130,17 +130,17 @@ export default function InvestmentPortfolio({ investments, setInvestments, onCha
   };
 
   return (
-    <div className="card p-2 pb-1 mb-1">
-      <h2 className="text-xs font-bold mb-1">Investment Portfolio</h2>
+    <div className="card p-3 pb-2 mb-2 text-base">
+      <h2 className="text-base font-bold mb-2">Investment Portfolio</h2>
       <div className="flex-1 flex flex-col min-h-0">
-        <div style={{ height: '45%', marginBottom: '0.1rem' }}>
+        <div style={{ height: '45%', marginBottom: '0.2rem' }}>
           <Pie ref={pieRef} data={pieData} options={chartOptions} onClick={handlePieClick} />
         </div>
-        <div className="space-y-0.5 flex-shrink-0">
+        <div className="space-y-2 flex-shrink-0">
           <input
             type="text"
             placeholder="Investment name"
-            className="text-xs px-1 py-0.5 mb-0.5"
+            className="text-base px-3 py-2 mb-2"
             value={input.name}
             onChange={e => setInput(i => ({ ...i, name: e.target.value }))}
             required
@@ -150,7 +150,7 @@ export default function InvestmentPortfolio({ investments, setInvestments, onCha
             placeholder="% of total holding"
             min={1}
             max={100}
-            className="text-xs px-1 py-0.5 mb-0.5"
+            className="text-base px-3 py-2 mb-2"
             value={input.ratio}
             onChange={e => setInput(i => ({ ...i, ratio: e.target.value }))}
             required
@@ -158,30 +158,30 @@ export default function InvestmentPortfolio({ investments, setInvestments, onCha
           <input
             type="number"
             placeholder="Estimated performance (%)"
-            className="text-xs px-1 py-0.5 mb-0.5"
+            className="text-base px-3 py-2 mb-2"
             value={input.performance}
             onChange={e => setInput(i => ({ ...i, performance: e.target.value }))}
             required
           />
-          <div className="w-full flex gap-1">
+          <div className="w-full flex gap-2">
             {matchIdx !== -1 && input.name.trim() ? (
               <>
-                <button type="button" className="danger w-1/2 text-xs py-0.5" onClick={handleRemoveSelected}>
+                <button type="button" className="danger w-1/2 text-base py-2" onClick={handleRemoveSelected}>
                   Remove
                 </button>
-                <button type="button" className="primary-action w-1/2 text-xs py-0.5" onClick={handleSave}>
+                <button type="button" className="primary-action w-1/2 text-base py-2" onClick={handleSave}>
                   Save
                 </button>
               </>
             ) : (
-              <button type="button" className="primary-action w-full text-xs py-0.5" onClick={handleAdd}>
+              <button type="button" className="primary-action w-full text-base py-2" onClick={handleAdd}>
                 Add
               </button>
             )}
           </div>
         </div>
         {totalRatio > 100 && (
-          <div className="text-red-400 mt-0.5 text-xs flex-shrink-0">
+          <div className="text-red-400 mt-2 text-base flex-shrink-0">
             Total allocation cannot exceed 100%.
           </div>
         )}

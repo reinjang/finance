@@ -14,15 +14,15 @@ function parseNumber(str) {
 
 export default function InputCard({ form, setForm, onSubmit }) {
   return (
-    <div className="card p-2 pb-1 mb-1">
-      <h2 className="text-xs font-bold mb-1">Financial Input</h2>
-      <div className="space-y-0.5">
+    <div className="card p-3 pb-2 mb-2 text-base">
+      <h2 className="text-base font-bold mb-2">Financial Input</h2>
+      <div className="space-y-2">
         <div>
-          <label className="text-xs font-semibold mb-0.5">Net Worth:</label>
+          <label className="text-base font-semibold mb-1">Net Worth:</label>
           <input
             type="text"
             inputMode="numeric"
-            className="text-xs px-1 py-0.5 mb-0.5"
+            className="text-base px-3 py-2 mb-2"
             value={formatNumber(form.networth)}
             onChange={e => {
               const raw = parseNumber(e.target.value);
@@ -33,11 +33,11 @@ export default function InputCard({ form, setForm, onSubmit }) {
           />
         </div>
         <div>
-          <label className="text-xs font-semibold mb-0.5">Monthly Income:</label>
+          <label className="text-base font-semibold mb-1">Monthly Income:</label>
           <input
             type="text"
             inputMode="numeric"
-            className="text-xs px-1 py-0.5 mb-0.5"
+            className="text-base px-3 py-2 mb-2"
             value={formatNumber(form.income)}
             onChange={e => {
               const raw = parseNumber(e.target.value);
@@ -48,11 +48,11 @@ export default function InputCard({ form, setForm, onSubmit }) {
           />
         </div>
         <div>
-          <label className="text-xs font-semibold mb-0.5">Monthly Expenses:</label>
+          <label className="text-base font-semibold mb-1">Monthly Expenses:</label>
           <input
             type="text"
             inputMode="numeric"
-            className="text-xs px-1 py-0.5 mb-0.5"
+            className="text-base px-3 py-2 mb-2"
             value={formatNumber(form.expenses)}
             onChange={e => {
               const raw = parseNumber(e.target.value);
@@ -63,7 +63,7 @@ export default function InputCard({ form, setForm, onSubmit }) {
           />
         </div>
         <button
-          className="primary-action w-full text-xs py-1 mt-1"
+          className="primary-action w-full text-base py-2 mt-2"
           type="button"
           onClick={onSubmit}
         >

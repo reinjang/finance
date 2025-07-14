@@ -2,7 +2,8 @@
 
 body, #root {
   min-height: 100vh;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  width: 100vw;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%) !important;
   font-family: 'Nunito', 'Inter', system-ui, sans-serif;
   color: #22223B;
   letter-spacing: 0.01em;
@@ -70,7 +71,9 @@ body, #root {
 }
 
 .card input[type="number"], 
-.card input[type="text"] {
+.card input[type="text"],
+.card input[type="email"],
+.card input[type="password"] {
   background: rgba(243, 246, 251, 0.95);
   color: #22223B;
   border: 1px solid #b6c6e3;
@@ -83,7 +86,9 @@ body, #root {
   transition: border 0.2s, box-shadow 0.2s;
 }
 .card input[type="number"]:focus, 
-.card input[type="text"]:focus {
+.card input[type="text"]:focus,
+.card input[type="email"]:focus,
+.card input[type="password"]:focus {
   border: 1px solid #38bdf8;
   box-shadow: 0 0 2px 1px #38bdf855;
   outline: none;

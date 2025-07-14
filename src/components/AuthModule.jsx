@@ -67,54 +67,61 @@ export default function AuthModule() {
   };
 
   return (
-    <div className="w-full flex flex-col items-start px-2 pt-2 pb-0 bg-transparent text-sm">
+    <div className="card p-3 pb-2 mb-2 text-base">
+      <h2 className="text-base font-bold mb-2">Authentication</h2>
       {user ? (
-        <div className="flex items-center gap-2 w-full text-xs text-gray-300">
-          <span>Logged in as: <span className="font-mono text-cyan-300">{user.email}</span></span>
+        <div className="flex items-center gap-3 w-full text-base text-gray-700">
+          <span>Logged in as: <span className="font-mono text-gray-900">{user.email}</span></span>
           <button
-            className="ml-2 px-2 py-0.5 bg-gray-700 hover:bg-gray-800 text-xs text-white rounded transition"
+            className="ml-3 primary-action text-base"
             onClick={handleLogout}
           >
             Logout
           </button>
         </div>
       ) : (
-        <div className="flex flex-col items-start gap-1 w-full">
-          <div className="flex gap-2 mb-1">
+        <div className="flex flex-col items-start gap-2 w-full">
+          <div className="flex gap-3 mb-2">
             <button
-              className="px-2 py-0.5 bg-cyan-500 hover:bg-cyan-600 text-xs text-white rounded transition"
+              className="primary-action text-base"
               onClick={() => { setShowLogin(!showLogin); setShowRegister(false); setMessage(''); }}
             >
               Login
             </button>
             <button
-              className="px-2 py-0.5 bg-pink-500 hover:bg-pink-600 text-xs text-white rounded transition"
+              className="primary-action text-base"
               onClick={() => { setShowRegister(!showRegister); setShowLogin(false); setMessage(''); }}
             >
               Create Account
             </button>
           </div>
           {showLogin && (
-            <form onSubmit={handleLogin} className="flex flex-col gap-1 w-full animate-fade-in">
-              <input
-                type="email"
-                className="w-full px-2 py-1 rounded bg-gray-800 text-xs text-white border border-gray-700 focus:outline-none focus:ring-1 focus:ring-cyan-400"
-                placeholder="Email"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                required
-              />
-              <input
-                type="password"
-                className="w-full px-2 py-1 rounded bg-gray-800 text-xs text-white border border-gray-700 focus:outline-none focus:ring-1 focus:ring-cyan-400"
-                placeholder="Password"
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                required
-              />
+            <form onSubmit={handleLogin} className="flex flex-col gap-2 w-full animate-fade-in">
+              <div>
+                <label className="text-base font-semibold mb-1">Email:</label>
+                <input
+                  type="email"
+                  className="text-base px-3 py-2 mb-2"
+                  placeholder="Enter your email"
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                  required
+                />
+              </div>
+              <div>
+                <label className="text-base font-semibold mb-1">Password:</label>
+                <input
+                  type="password"
+                  className="text-base px-3 py-2 mb-2"
+                  placeholder="Enter your password"
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
+                  required
+                />
+              </div>
               <button
                 type="submit"
-                className="w-full py-1 bg-cyan-500 hover:bg-cyan-600 text-xs text-white rounded transition disabled:opacity-50"
+                className="primary-action w-full text-base disabled:opacity-50"
                 disabled={loading}
               >
                 {loading ? 'Logging in...' : 'Login'}
@@ -122,34 +129,43 @@ export default function AuthModule() {
             </form>
           )}
           {showRegister && (
-            <form onSubmit={handleRegister} className="flex flex-col gap-1 w-full animate-fade-in">
-              <input
-                type="email"
-                className="w-full px-2 py-1 rounded bg-gray-800 text-xs text-white border border-gray-700 focus:outline-none focus:ring-1 focus:ring-pink-400"
-                placeholder="Email"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                required
-              />
-              <input
-                type="password"
-                className="w-full px-2 py-1 rounded bg-gray-800 text-xs text-white border border-gray-700 focus:outline-none focus:ring-1 focus:ring-pink-400"
-                placeholder="Password"
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                required
-              />
-              <input
-                type="password"
-                className="w-full px-2 py-1 rounded bg-gray-800 text-xs text-white border border-gray-700 focus:outline-none focus:ring-1 focus:ring-pink-400"
-                placeholder="Confirm Password"
-                value={passwordConfirm}
-                onChange={e => setPasswordConfirm(e.target.value)}
-                required
-              />
+            <form onSubmit={handleRegister} className="flex flex-col gap-2 w-full animate-fade-in">
+              <div>
+                <label className="text-base font-semibold mb-1">Email:</label>
+                <input
+                  type="email"
+                  className="text-base px-3 py-2 mb-2"
+                  placeholder="Enter your email"
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                  required
+                />
+              </div>
+              <div>
+                <label className="text-base font-semibold mb-1">Password:</label>
+                <input
+                  type="password"
+                  className="text-base px-3 py-2 mb-2"
+                  placeholder="Enter your password"
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
+                  required
+                />
+              </div>
+              <div>
+                <label className="text-base font-semibold mb-1">Confirm Password:</label>
+                <input
+                  type="password"
+                  className="text-base px-3 py-2 mb-2"
+                  placeholder="Confirm your password"
+                  value={passwordConfirm}
+                  onChange={e => setPasswordConfirm(e.target.value)}
+                  required
+                />
+              </div>
               <button
                 type="submit"
-                className="w-full py-1 bg-pink-500 hover:bg-pink-600 text-xs text-white rounded transition disabled:opacity-50"
+                className="primary-action w-full text-base disabled:opacity-50"
                 disabled={loading}
               >
                 {loading ? 'Creating...' : 'Create Account'}
@@ -157,7 +173,7 @@ export default function AuthModule() {
             </form>
           )}
           {message && (
-            <div className="mt-1 text-xs text-yellow-300 animate-fade-in">
+            <div className="mt-2 text-base text-yellow-700 animate-fade-in">
               {message}
             </div>
           )}
