@@ -112,7 +112,7 @@ export default function AuthModule() {
     <div className="card p-3 pb-2 mb-2 text-base">
       {user ? (
         <div className="w-full flex items-center gap-3 bg-gray-100 border border-gray-200 rounded-lg px-4 py-2 mb-2" style={{fontFamily: 'Nunito, Inter, sans-serif'}}>
-          <span className="text-base font-semibold text-gray-700">Logged in as: <span className="text-base font-semibold text-gray-900">{user.email}</span></span>
+          <span className="text-base font-semibold text-gray-700">Logged in as: <span className="text-base text-gray-900">{user.email}</span></span>
           <button
             className="ml-3 primary-action text-base"
             onClick={handleLogout}

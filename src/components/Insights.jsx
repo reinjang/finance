@@ -153,7 +153,7 @@ export default function Insights({ form, investments, apiResult, setApiResult, o
         labels: {
           color: '#495057',
           font: {
-            size: 10,
+            size: 12,
             weight: 'bold',
             family: 'Nunito, Inter, sans-serif'
           },
@@ -167,8 +167,8 @@ export default function Insights({ form, investments, apiResult, setApiResult, o
         bodyColor: '#495057',
         borderColor: '#b6c6e3',
         borderWidth: 1,
-        titleFont: { size: 10, family: 'Nunito, Inter, sans-serif' },
-        bodyFont: { size: 10, family: 'Nunito, Inter, sans-serif' },
+        titleFont: { size: 12, family: 'Nunito, Inter, sans-serif' },
+        bodyFont: { size: 12, family: 'Nunito, Inter, sans-serif' },
         callbacks: {
           title: function(context) {
             return context[0].label;
@@ -237,7 +237,7 @@ export default function Insights({ form, investments, apiResult, setApiResult, o
       x: {
         ticks: {
           color: '#495057',
-          font: { size: 10, family: 'Nunito, Inter, sans-serif' }
+          font: { size: 12, family: 'Nunito, Inter, sans-serif' }
         },
         grid: {
           color: '#e3e8f0',
@@ -247,7 +247,7 @@ export default function Insights({ form, investments, apiResult, setApiResult, o
       y: {
         ticks: {
           color: '#495057',
-          font: { size: 10, family: 'Nunito, Inter, sans-serif' },
+          font: { size: 12, family: 'Nunito, Inter, sans-serif' },
           callback: function(value) {
             return '€' + value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
           }
@@ -294,7 +294,7 @@ export default function Insights({ form, investments, apiResult, setApiResult, o
                 ...chartOptions.plugins.legend,
                 labels: {
                   ...chartOptions.plugins.legend.labels,
-                  font: { size: 10, weight: 'normal', family: 'Nunito, Inter, sans-serif' },
+                  font: { size: 12, weight: 'normal', family: 'Nunito, Inter, sans-serif' },
                   boxWidth: 18,
                   padding: 12,
                 }
@@ -303,11 +303,11 @@ export default function Insights({ form, investments, apiResult, setApiResult, o
             scales: {
               x: {
                 ...chartOptions.scales.x,
-                ticks: { ...chartOptions.scales.x.ticks, font: { size: 10, family: 'Nunito, Inter, sans-serif' } }
+                ticks: { ...chartOptions.scales.x.ticks, font: { size: 12, family: 'Nunito, Inter, sans-serif' } }
               },
               y: {
                 ...chartOptions.scales.y,
-                ticks: { ...chartOptions.scales.y.ticks, font: { size: 10, family: 'Nunito, Inter, sans-serif' } }
+                ticks: { ...chartOptions.scales.y.ticks, font: { size: 12, family: 'Nunito, Inter, sans-serif' } }
               }
             }
           }} />
