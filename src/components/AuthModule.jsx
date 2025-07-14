@@ -13,7 +13,6 @@ export default function AuthModule() {
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState(pb.authStore.model);
 
-  // Listen for auth changes
   React.useEffect(() => {
     const unsubscribe = pb.authStore.onChange(() => {
       setUser(pb.authStore.model);
@@ -68,39 +67,38 @@ export default function AuthModule() {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto mt-8 p-6 bg-gray-900 rounded-xl shadow-lg border border-gray-700">
-      <h2 className="text-2xl font-bold text-center text-cyan-400 mb-4">User Authentication</h2>
+    <div className="w-full flex flex-col items-start px-2 pt-2 pb-0 bg-transparent text-sm">
       {user ? (
-        <div className="flex flex-col items-center gap-3 animate-fade-in">
-          <div className="text-cyan-200 text-lg">Logged in as: <span className="font-mono">{user.email}</span></div>
+        <div className="flex items-center gap-2 w-full text-xs text-gray-300">
+          <span>Logged in as: <span className="font-mono text-cyan-300">{user.email}</span></span>
           <button
-            className="px-4 py-2 bg-gray-700 hover:bg-gray-800 text-white rounded transition"
+            className="ml-2 px-2 py-0.5 bg-gray-700 hover:bg-gray-800 text-xs text-white rounded transition"
             onClick={handleLogout}
           >
             Logout
           </button>
         </div>
       ) : (
-        <>
-          <div className="flex justify-center gap-4 mb-4">
+        <div className="flex flex-col items-start gap-1 w-full">
+          <div className="flex gap-2 mb-1">
             <button
-              className="px-4 py-2 bg-cyan-500 hover:bg-cyan-600 text-white rounded transition"
+              className="px-2 py-0.5 bg-cyan-500 hover:bg-cyan-600 text-xs text-white rounded transition"
               onClick={() => { setShowLogin(!showLogin); setShowRegister(false); setMessage(''); }}
             >
               Login
             </button>
             <button
-              className="px-4 py-2 bg-pink-500 hover:bg-pink-600 text-white rounded transition"
+              className="px-2 py-0.5 bg-pink-500 hover:bg-pink-600 text-xs text-white rounded transition"
               onClick={() => { setShowRegister(!showRegister); setShowLogin(false); setMessage(''); }}
             >
               Create Account
             </button>
           </div>
           {showLogin && (
-            <form onSubmit={handleLogin} className="space-y-3 animate-fade-in">
+            <form onSubmit={handleLogin} className="flex flex-col gap-1 w-full animate-fade-in">
               <input
                 type="email"
-                className="w-full px-3 py-2 rounded bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-cyan-400"
+                className="w-full px-2 py-1 rounded bg-gray-800 text-xs text-white border border-gray-700 focus:outline-none focus:ring-1 focus:ring-cyan-400"
                 placeholder="Email"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
@@ -108,7 +106,7 @@ export default function AuthModule() {
               />
               <input
                 type="password"
-                className="w-full px-3 py-2 rounded bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-cyan-400"
+                className="w-full px-2 py-1 rounded bg-gray-800 text-xs text-white border border-gray-700 focus:outline-none focus:ring-1 focus:ring-cyan-400"
                 placeholder="Password"
                 value={password}
                 onChange={e => setPassword(e.target.value)}
@@ -116,7 +114,7 @@ export default function AuthModule() {
               />
               <button
                 type="submit"
-                className="w-full py-2 bg-cyan-500 hover:bg-cyan-600 text-white rounded transition disabled:opacity-50"
+                className="w-full py-1 bg-cyan-500 hover:bg-cyan-600 text-xs text-white rounded transition disabled:opacity-50"
                 disabled={loading}
               >
                 {loading ? 'Logging in...' : 'Login'}
@@ -124,10 +122,10 @@ export default function AuthModule() {
             </form>
           )}
           {showRegister && (
-            <form onSubmit={handleRegister} className="space-y-3 animate-fade-in">
+            <form onSubmit={handleRegister} className="flex flex-col gap-1 w-full animate-fade-in">
               <input
                 type="email"
-                className="w-full px-3 py-2 rounded bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-pink-400"
+                className="w-full px-2 py-1 rounded bg-gray-800 text-xs text-white border border-gray-700 focus:outline-none focus:ring-1 focus:ring-pink-400"
                 placeholder="Email"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
@@ -135,7 +133,7 @@ export default function AuthModule() {
               />
               <input
                 type="password"
-                className="w-full px-3 py-2 rounded bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-pink-400"
+                className="w-full px-2 py-1 rounded bg-gray-800 text-xs text-white border border-gray-700 focus:outline-none focus:ring-1 focus:ring-pink-400"
                 placeholder="Password"
                 value={password}
                 onChange={e => setPassword(e.target.value)}
@@ -143,7 +141,7 @@ export default function AuthModule() {
               />
               <input
                 type="password"
-                className="w-full px-3 py-2 rounded bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-pink-400"
+                className="w-full px-2 py-1 rounded bg-gray-800 text-xs text-white border border-gray-700 focus:outline-none focus:ring-1 focus:ring-pink-400"
                 placeholder="Confirm Password"
                 value={passwordConfirm}
                 onChange={e => setPasswordConfirm(e.target.value)}
@@ -151,18 +149,18 @@ export default function AuthModule() {
               />
               <button
                 type="submit"
-                className="w-full py-2 bg-pink-500 hover:bg-pink-600 text-white rounded transition disabled:opacity-50"
+                className="w-full py-1 bg-pink-500 hover:bg-pink-600 text-xs text-white rounded transition disabled:opacity-50"
                 disabled={loading}
               >
                 {loading ? 'Creating...' : 'Create Account'}
               </button>
             </form>
           )}
-        </>
-      )}
-      {message && (
-        <div className="mt-4 text-center text-sm text-yellow-300 animate-fade-in">
-          {message}
+          {message && (
+            <div className="mt-1 text-xs text-yellow-300 animate-fade-in">
+              {message}
+            </div>
+          )}
         </div>
       )}
     </div>
