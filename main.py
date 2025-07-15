@@ -3,6 +3,7 @@ from pydantic import BaseModel
 from typing import Dict, Any, List
 from fastapi.middleware.cors import CORSMiddleware
 import os
+import httpx
 
 app = FastAPI(title="Finance Planner API", version="1.0.0")
 
@@ -81,4 +82,11 @@ def api(input_data: FinanceInput):
             current_networth = float(current_networth) + (float(income) * 12 - float(expenses) * 12) + float(total_investment_return)
         return {"result": results}
     except Exception as e:
-        raise HTTPException(status_code=400, detail=f"Invalid input. {str(e)}") 
+        raise HTTPException(status_code=400, detail=f"Invalid input. {str(e)}")
+
+@app.post("/api/llm")
+async def llm_proxy(request):
+    data = await request.json()
+    async with httpx.AsyncClient() as client:
+        resp = await client.post("http://localhost:11434/api/generate", json=data)
+        return resp.json() 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { inputQuestions } from './questions';
 
-const OLLAMA_API_URL = 'http://localhost:11434/api/generate';
+const OLLAMA_API_URL = '/api/llm';
 const MODEL = 'llama3';
 
 async function getFriendlyQuestion(label) {
