@@ -87,6 +87,6 @@ def api(input_data: FinanceInput):
 @app.post("/api/llm")
 async def llm_proxy(request: Request):
     data = await request.json()
-    async with httpx.AsyncClient() as client:
+    async with httpx.AsyncClient(timeout=60.0) as client:
         resp = await client.post("http://localhost:11434/api/generate", json=data)
         return resp.json() 
