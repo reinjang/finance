@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from pydantic import BaseModel
 from typing import Dict, Any, List
 from fastapi.middleware.cors import CORSMiddleware
@@ -85,7 +85,7 @@ def api(input_data: FinanceInput):
         raise HTTPException(status_code=400, detail=f"Invalid input. {str(e)}")
 
 @app.post("/api/llm")
-async def llm_proxy(request):
+async def llm_proxy(request: Request):
     data = await request.json()
     async with httpx.AsyncClient() as client:
         resp = await client.post("http://localhost:11434/api/generate", json=data)
