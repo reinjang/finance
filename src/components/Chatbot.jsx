@@ -1,6 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import { inputQuestions } from './questions';
 
+const OLLAMA_API_URL = 'http://localhost:11434/api/generate';
+const MODEL = 'llama3';
+
+async function getFriendlyQuestion(label) {
+  const prompt = `Please ask the user for their ${label} in a friendly, conversational way. Only ask the question, do not provide any explanation.`;
+  const res = await fetch(OLLAMA_API_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ model: MODEL, prompt, stream: false })
+  });
+  const data = await res.json();
+  return data.response.trim();
+}
+
+async function extractValueFromAnswer(label, answer) {
+  const prompt = `Extract the numeric value for the user's ${label} from the following answer. Only return the number, no explanation. If the answer is not a number, return null. Answer: '${answer}'`;
+  const res = await fetch(OLLAMA_API_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ model: MODEL, prompt, stream: false })
+  });
+  const data = await res.json();
+  return data.response.trim();
+}
+
 export default function Chatbot({ form, setForm, user }) {
   const [step, setStep] = useState(0);
   const [messages, setMessages] = useState([
@@ -9,21 +34,28 @@ export default function Chatbot({ form, setForm, user }) {
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [question, setQuestion] = useState('');
 
-  // Ask the next question when step changes
+  // Ask the next question using the LLM
   useEffect(() => {
     if (step < inputQuestions.length) {
-      setMessages(msgs => [...msgs, { role: 'assistant', content: inputQuestions[step].label }]);
+      setLoading(true);
+      getFriendlyQuestion(inputQuestions[step].label)
+        .then(q => {
+          setQuestion(q);
+          setMessages(msgs => [...msgs, { role: 'assistant', content: q }]);
+        })
+        .catch(() => setQuestion(inputQuestions[step].label))
+        .finally(() => setLoading(false));
     }
+    // eslint-disable-next-line
   }, [step]);
 
   // Keep local answers in sync with form prop
   useEffect(() => {
     if (step === 0) return;
-    // If form was updated externally, update messages
     inputQuestions.forEach((q, idx) => {
       if (form[q.key] && idx < step) {
-        // Already answered, ensure message is present
         const already = messages.find(m => m.role === 'user' && m.content === form[q.key]);
         if (!already) {
           setMessages(msgs => [...msgs, { role: 'user', content: form[q.key] }]);
@@ -37,15 +69,21 @@ export default function Chatbot({ form, setForm, user }) {
     e.preventDefault();
     if (!input.trim()) return;
     const currentKey = inputQuestions[step]?.key;
+    const currentLabel = inputQuestions[step]?.label;
     setMessages(msgs => [...msgs, { role: 'user', content: input }]);
-    setForm(f => ({ ...f, [currentKey]: input }));
-    setInput('');
     setLoading(true);
     setError('');
-    setTimeout(() => {
-      setLoading(false);
+    try {
+      // Extract value using LLM
+      const extracted = await extractValueFromAnswer(currentLabel, input);
+      setForm(f => ({ ...f, [currentKey]: extracted }));
+      setInput('');
       setStep(s => s + 1);
-    }, 400); // Simulate a short delay
+    } catch (err) {
+      setError('Failed to extract value.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const allAnswered = step >= inputQuestions.length;
